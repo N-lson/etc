@@ -4,7 +4,7 @@ open FSharp.Json
 #load "Types.fsx"
 open Types
 
-let isInProject (p:Project) r = p.Id = r.ProjectId
+let isInProject (p:Project) (r:Release) = p.Id = r.ProjectId
 let getReleasesForProject p =
     let releases = File.ReadAllText "Data/Releases.json" |> Json.deserialize<Release list>
     List.filter (isInProject p) releases

@@ -34,9 +34,3 @@ type Deployment = {
 }
 
 type EnvironmentAndReleases = Environment * Release list
-
-type RetentionLogInfo = {
-    Project:Project
-    Release:Release
-    Environment:Environment
-}
