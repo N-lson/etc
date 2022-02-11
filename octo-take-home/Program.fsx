@@ -1,6 +1,8 @@
 open System.IO
+#r "nuget: FSharp.Json"
 open FSharp.Json
-open FSharpApp.Domain.Types
+#load "Types.fsx"
+open Types
 
 let isInProject (p:Project) r = p.Id = r.ProjectId
 let getReleasesForProject p =
@@ -14,8 +16,6 @@ let getLatestDeploymentForEnvAndRelease (e:Environment) (r:Release) =
     | [] -> None
     | [d] -> Some d
     | _ -> Some(List.reduce (fun curr latest -> if curr.DeployedAt > latest.DeployedAt then curr else latest) deploymentsForEnvAndRelease)
-
-let getProjectFromReleaseId r = List.find
 
 let logReasonForRetention list =
     List.map (fun x->printfn $"{x.ReleaseId} kept because it was the most recently deployed to {x.EnvironmentId}") list |> ignore
@@ -39,8 +39,5 @@ let releaseRetention n =
         |> List.allPairs environments
         |> List.map(keepNLatestReleases(n))
 
-[<EntryPoint>]
-let main argv =
-    // do something
-    let result = releaseRetention 1
-    0
+let result = releaseRetention 1
+0
